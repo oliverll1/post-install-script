@@ -1,0 +1,93 @@
+#!/bin/bash
+
+sudo pacman -Syu
+
+cd ~/Downloads
+
+### Desktop ###
+yes | sudo pacman -S cinnamon papirus-icon-theme blueman gdm upower sox zenity xclip python python-xlib ddcutil
+
+### Admin Packages ###
+
+sudo pacman -S git awk bash-completion base-devel curl dnsutils gnupg inetutils iproute2 iptables iw iwd jq less lsof man net-tools nmap openssh strace unzip usbutils whois
+
+
+### Development ### 
+
+# NVM
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | zsh
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+
+
+sudo pacman -S php docker zsh
+sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+chsh -s $(which zsh)
+
+# VS Code
+git clone https://aur.archlinux.org/visual-studio-code-bin
+cd visual-studio-code-bin/
+makepkg -si
+cd ../ && sudo rm -rfv visual-studio-code-bin/
+
+# Slack
+git clone https://aur.archlinux.org/slack-desktop.git
+cd slack-desktop/
+makepkg -sri
+cd ../ && sudo rm -rfv slack-desktop/
+
+# YAY
+cd /opt
+sudo git clone https://aur.archlinux.org/yay-git.git
+sudo chown -R tecmint:tecmint ./yay-git
+cd yay-git
+makepkg -si
+cd ../ && sudo rm -rfv yay-git/
+
+cd ~/Downloads
+
+
+# Apps
+sudo pacman -S discord gimp galculator vlc blender flameshot gnote gpaste eog
+
+
+git clone https://aur.archlinux.org/timeshift.git
+cd timeshift/
+makepkg -sri
+cd ../ && sudo rm -rfv timeshift/
+
+
+git clone https://aur.archlinux.org/zoom.git
+cd zoom
+makepkg -si
+cd ../ && sudo rm -rfv zoom/
+
+
+# WINE
+sudo pacman -S wine && sudo pacman -S $(pactree -l wine)
+
+
+# Browsers
+
+git clone https://aur.archlinux.org/google-chrome.git
+cd google-chrome/
+makepkg -sri
+cd ../ && sudo rm -rfv google-chrome/
+
+pacman -S brave-browser
+
+## LIBRE OFFICE
+sudo pacman -S --needed ttf-caladea ttf-carlito ttf-dejavu ttf-liberation ttf-linux-libertine-g noto-fonts adobe-source-code-pro-fonts adobe-source-sans-pro-fonts adobe-source-serif-pro-fonts
+paru ttf-gentium-basic
+paru hsqldb2-java
+paru libreoffice-extension-languagetool
+
+sudo pacman -S --needed jre-openjdk
+
+sudo pacman -S libreoffice-still libreoffice-extension-texmaths libreoffice-extension-writer2latex
+sudo pacman -S hunspell hunspell-en_us
+
+
+# Start Display
+systemctl start gdm
